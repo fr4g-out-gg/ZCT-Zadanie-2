@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: flask_postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: counters_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  flask-app:
+    build: .
+    container_name: flask_counter_app
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/counters_db
+
+volumes:
+  pgdata:
