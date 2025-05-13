@@ -74,6 +74,3 @@ Na ukladanie dát používame relačnú databázu PostgreSQL. Backend komunikuje
 5. Môžete začať zaznamenávať svoje študijné aktivity, upravovať ich a prehliadať.  
 6. Po skončení práce jednoducho zatvorte kartu v prehliadači.  
 
----
-
-> 📬 *Ak máte otázky alebo návrhy na zlepšenie, neváhajte vytvoriť issue v repozitári.*
