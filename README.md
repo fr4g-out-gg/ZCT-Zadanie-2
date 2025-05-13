@@ -12,7 +12,7 @@ Cieľom riešenia bolo vytvoriť jednoduchú webovú aplikáciu, ktorá umožňu
 - Prehľadné webové rozhranie  
 - Možnosť pridávania, mazania a prezerania záznamov  
 
-🔧 Aplikácia je rozdelená na **frontend** a **backend**, pričom každý komponent je nasadený na inej cloudovej platforme.
+🔧 Aplikácia je rozdelená na **frontend**, **backend** a **databázu**. Každý komponent je nasadený v inom prostredí.
 
 ---
 
@@ -28,9 +28,22 @@ Cieľom riešenia bolo vytvoriť jednoduchú webovú aplikáciu, ktorá umožňu
 
 ## 🗺️ Diagram použitých služieb
 
-```
+![Študijný Tracker](diagram.png)
+---
+Diagram použitých služieb – popis
+Naša aplikácia je rozdelená na tri hlavné komponenty: frontend, backend a databázu. Každý komponent je nasadený v inom prostredí a spolu komunikujú prostredníctvom protokolu HTTP.
 
-```
+🧑‍💻 Používateľ (USER)
+Používateľ pristupuje k aplikácii cez webový prehliadač. Požiadavky (napr. načítanie stránky, odoslanie formulára) sú smerované na frontend aplikácie.
+
+🖥️ Frontend (Azure Static Web Apps)
+Frontend je nasadený v službe Microsoft Azure – konkrétne v Azure Static Web Apps. Poskytuje používateľské rozhranie (UI), ktoré zobrazuje dáta a umožňuje interakciu. Požiadavky na dynamické údaje (napr. z databázy) posiela na backend cez HTTP.
+
+⚙️ Backend (Render)
+Backend aplikácie beží na Render. Spracúva všetky požiadavky z frontendu – autentifikáciu, ukladanie a získavanie dát z databázy.
+
+🗄️ Databáza (PostgreSQL)
+Na ukladanie dát používame relačnú databázu PostgreSQL. Backend komunikuje s databázou – posiela a číta údaje potrebné na fungovanie aplikácie.
 
 ---
 
