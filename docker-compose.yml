@@ -20,6 +20,7 @@ services:
     restart: always
     ports:
       - "5000:5000"
+      - "8501:8501"  # Add this line to map the Streamlit port
     depends_on:
       - db
     environment:

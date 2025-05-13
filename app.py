@@ -152,8 +152,8 @@ def visualization():
         def run_streamlit():
             subprocess.Popen([
                 "streamlit", "run", "study.py",
-                "--server.enableCORS=false",
-                "--server.enableXsrfProtection=false"
+               # "--server.enableCORS=false",
+               # "--server.enableXsrfProtection=false"
             ])
 
         app.streamlit_thread = threading.Thread(target=run_streamlit)
