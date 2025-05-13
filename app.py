@@ -124,7 +124,7 @@ def check_connection():
 
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5004)), debug=True)
 
 from flask_cors import CORS
