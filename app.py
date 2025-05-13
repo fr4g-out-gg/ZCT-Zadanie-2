@@ -1,16 +1,15 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 from sqlalchemy import inspect, text
-import subprocess
-import threading
-import time
+from ai import ask_gemini
+from flask_cors import CORS
 
+app = Flask(_name_)
+CORS(app)
 
-app = Flask(__name__)
-
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:password@db:5432/counters_db")
+DATABASE_URL = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -30,6 +29,7 @@ class Activity(db.Model):
             "date": self.date.isoformat()  # ISO string for JS Date compatibility
         }
 
+    
 with app.app_context():
     db.create_all()
 
@@ -82,6 +82,19 @@ def clear_all_activities():
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+@app.route("/recommend", methods=["POST"])
+def recommend():
+    data = request.get_json()
+    activities = data.get("activities", [])
+
+    if not activities:
+        return jsonify({"error": "Chýbajú študijné dáta"}), 400
+
+    try:
+        response = ask_gemini(activities)
+        return jsonify({"recommendation": response})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/connected")
@@ -109,82 +122,10 @@ def check_connection():
             <p>Error: {str(e)}</p>
         """
 
-# Streamlit Integration
-def run_streamlit():
-    """
-    Runs the Streamlit app as a subprocess.
-    """
-    try:
-        subprocess.Popen(["streamlit", "run", "study.py", "--server.enableCORS=false", "--server.enableXsrfProtection=false"], 
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    except Exception as e:
-        print(f"Error running Streamlit: {e}")
-
-@app.route("/visualization")
-def visualization():
-    """
-    1. Export current activities to CSV
-    2. Start Streamlit visualization (if not already running)
-    3. Redirect to Streamlit UI
-    """
-    # Export CSV
-    try:
-        activities = Activity.query.order_by(Activity.date.desc()).all()
-        if not activities:
-            return "<h3>❌ Žiadne dáta na exportovanie</h3>", 404
-
-        import csv
-        with open("activities.csv", mode="w", newline="", encoding="utf-8") as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(["id", "topic", "study_time", "date"])  # header
-            for activity in activities:
-                writer.writerow([
-                    activity.id,
-                    activity.topic,
-                    activity.study_time,
-                    activity.date.isoformat()
-                ])
-    except Exception as e:
-        return f"<h3>❌ Chyba pri exporte CSV: {str(e)}</h3>", 500
-
-    # Run Streamlit if not already running
-    if not hasattr(app, 'streamlit_thread') or not app.streamlit_thread.is_alive():
-        def run_streamlit():
-            subprocess.Popen([
-                "streamlit", "run", "study.py",
-               # "--server.enableCORS=false",
-               # "--server.enableXsrfProtection=false"
-            ])
-
-        app.streamlit_thread = threading.Thread(target=run_streamlit)
-        app.streamlit_thread.daemon = True
-        app.streamlit_thread.start()
-        time.sleep(2)  # give streamlit time to start
-
-    # Redirect to Streamlit interface
-    return redirect("http://localhost:8501")
-
-@app.route("/export_csv", methods=["GET"])
-def export_csv():
-    activities = Activity.query.order_by(Activity.date.desc()).all()
-    if not activities:
-        return jsonify({"error": "No data to export"}), 404
-
-    import csv
-    from io import StringIO
-    si = StringIO()
-    writer = csv.writer(si)
-    writer.writerow(["id", "topic", "study_time", "date"])  # Header
-
-    for activity in activities:
-        writer.writerow([activity.id, activity.topic, activity.study_time, activity.date.isoformat()])
-
-    output = si.getvalue()
-    return output, 200, {
-        'Content-Type': 'text/csv',
-        'Content-Disposition': 'attachment; filename=activities.csv'
-    }
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+if _name_ == "_main_":
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5004)), debug=True)
+
+from flask_cors import CORS
+
