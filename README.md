@@ -3,7 +3,7 @@
 
 ---
 
-## 🧠 1. Analýza úlohy
+##  1. Analýza úlohy
 
 Cieľom riešenia bolo vytvoriť jednoduchú webovú aplikáciu, ktorá umožňuje používateľom zaznamenávať a spravovať svoje študijné aktivity.
 
@@ -16,7 +16,7 @@ Cieľom riešenia bolo vytvoriť jednoduchú webovú aplikáciu, ktorá umožňu
 
 ---
 
-## 🛠️ Zvolené technológie
+## Zvolené technológie
 
 - ⚙️ **Render**: Nasadenie backendovej služby 
 - 🌐 **Azure Static Web Apps**: Hosting frontendovej aplikácie  
@@ -26,7 +26,7 @@ Cieľom riešenia bolo vytvoriť jednoduchú webovú aplikáciu, ktorá umožňu
 
 ---
 
-## 🗺️ Diagram použitých služieb
+## Diagram použitých služieb
 
 ![Študijný Tracker](diagram.png)
 ---
@@ -47,7 +47,7 @@ Na ukladanie dát používame relačnú databázu PostgreSQL. Backend komunikuje
 
 ---
 
-## 👥 Rozdelenie práce
+## Rozdelenie práce
 
 - **Mariana Tomiová**: Backend (cloud) + AI  
 - **Dominik Vojtko**: Backend + databáza  
@@ -56,7 +56,7 @@ Na ukladanie dát používame relačnú databázu PostgreSQL. Backend komunikuje
 
 ---
 
-## 🚀 Spustenie aplikácie
+## Spustenie aplikácie
 
 > 💡 *Používateľ nepotrebuje nič inštalovať – aplikácia je plne dostupná online.*
 
@@ -65,7 +65,7 @@ Na ukladanie dát používame relačnú databázu PostgreSQL. Backend komunikuje
 
 ---
 
-### 🧭 Postup:
+### Postup:
 
 1. Otvorte ľubovoľný internetový prehliadač (napr. Google Chrome, Microsoft Edge, Mozilla Firefox).  
 2. Do adresného riadku zadajte URL vyššie.  
