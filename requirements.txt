@@ -5,3 +5,6 @@ psycopg2
 streamlit
 pandas
 seaborn
+
+python-dotenv
+requests
